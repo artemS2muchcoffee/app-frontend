@@ -1,0 +1,18 @@
+:host ::ng-deep {
+  .validate-error {
+    .errors {
+      position: relative;
+    }
+    .form-error {
+      display: none;
+      font-size: 10px;
+      text-align: left;
+      position: absolute;
+      top: 10px;
+      &.show-error:first-child {
+        display: block;
+      }
+    }
+  }
+}
+
