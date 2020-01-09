@@ -18,6 +18,7 @@ import {
 import { SignInFail, SignInSuccess } from '../../../auth/auth.actions';
 import { ApiService } from '../../../../core/general/api.service';
 import { AuthResponse } from '../../../../shared/models/auth-response.model';
+import { ShowSnackAction } from '../../../application/application.actions';
 
 @State<IRequestsNestedState>({
   name: 'signInRequestState',
@@ -47,7 +48,7 @@ export class SignInRequestState {
   @Action(SignInRequestSuccess)
   signInRequestSuccess({ patchState, dispatch }: StateContext<IRequestsNestedState>, { payload }: SignInRequestSuccess) {
     patchState(requestSuccessState(payload));
-    dispatch(new SignInSuccess(payload.token));
+    dispatch(payload.success ? new SignInSuccess(payload.token) : new ShowSnackAction(payload.message));
   }
 
   @Action(SignInRequestFail)
