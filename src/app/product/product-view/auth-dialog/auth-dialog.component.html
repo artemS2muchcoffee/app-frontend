@@ -1,0 +1,19 @@
+<div class="dialog-wrapper">
+  <div class="close-dialog" (click)="closeDialog()"><mat-icon>close</mat-icon></div>
+  <ng-container *ngIf="(authType$ | async) === type.SingIn; else signUp">
+    <div class="title">Sign In</div>
+    <app-auth-form [authType]="authType$ | async"></app-auth-form>
+    <div class="bottom">
+      IS NOT REGISTERED?
+      <button class="btn-auth" (click)="selectSignUp()">SIGN UP</button>
+    </div>
+  </ng-container>
+  <ng-template #signUp>
+    <div class="title">Sign Up</div>
+    <app-auth-form [authType]="authType$ | async"></app-auth-form>
+    <div class="bottom">
+      ALREADY REGISTERED?
+      <button class="btn-auth" (click)="selectSignIn()">SIGN IN</button>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,28 @@
+@import '../../../../styles/variables';
+
+:host ::ng-deep {
+  .dialog-wrapper {
+    position: relative;
+
+    .close-dialog {
+      position: absolute;
+      right: 0;
+      top: -25px;
+      cursor: pointer;
+    }
+    .title {
+      margin: 20px 0 20px;
+    }
+    .bottom {
+      text-align: center;
+      font-size: 11px;
+      .btn-auth {
+        font-size: 11px;
+        border: none;
+        background-color: transparent;
+        color: $color-primary;
+        cursor: pointer;
+      }
+    }
+  }
+}
