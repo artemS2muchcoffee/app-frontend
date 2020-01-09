@@ -1,5 +1,7 @@
 import { Action, NgxsOnInit, State, StateContext } from '@ngxs/store';
 
+import { Navigate } from '@ngxs/router-plugin';
+
 import { SignInRequest } from '../requests/auth/sign-in/sign-in.request.actions';
 import { SessionService } from '../../core/services/session.service';
 import {
@@ -7,7 +9,9 @@ import {
   ClearToken,
   SetToken,
   SignIn,
-  SignInSuccess, SignUp, SignUpSuccess,
+  SignInSuccess,
+  SignUp,
+  SignUpSuccess,
 } from './auth.actions';
 import { SignUpRequest } from '../requests/auth/sign-up/sign-up.request.actions';
 
@@ -36,7 +40,10 @@ export class AuthState implements NgxsOnInit {
   @Action(CheckTokenInLocalStorage)
   checkToken({ dispatch }: StateContext<AuthStateModel>) {
     const token = this.sessionService.getSessionToken();
-    dispatch(token ? new SetToken(token) : new ClearToken());
+    const expiration = this.sessionService.getExpirationDate();
+    const expirationDate = new Date(expiration);
+    const now = new Date();
+    dispatch(token && (expirationDate > now) ? new SetToken(token) : new ClearToken());
   }
 
   @Action(SignUp)
@@ -48,6 +55,7 @@ export class AuthState implements NgxsOnInit {
   signUpSuccess({ dispatch }: StateContext<AuthStateModel>, { payload }: SignUpSuccess) {
     const token: string = payload;
     this.sessionService.setSessionToken(token);
+    this.sessionService.setExpirationDate();
     dispatch(new SetToken(token));
   }
 
@@ -71,11 +79,13 @@ export class AuthState implements NgxsOnInit {
   }
 
   @Action(ClearToken)
-  clearToken({ patchState }: StateContext<AuthStateModel>) {
+  clearToken({ patchState, dispatch }: StateContext<AuthStateModel>) {
     patchState({
       token: null,
     });
     this.sessionService.removeSessionToken();
+    this.sessionService.removeExpirationDate();
+    dispatch(new Navigate(['/', 'auth', '/', 'sign-in']));
   }
 
 }
