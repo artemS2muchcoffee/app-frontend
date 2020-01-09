@@ -1,4 +1,6 @@
 @import '../../styles/variables';
+@import "../../styles/media";
+
 
 :host ::ng-deep {
   .auth-wrapper {
@@ -8,30 +10,23 @@
 
     .auth-container {
       margin-top: 105px;
-      width: 500px;
+      width: 270px;
       height: auto;
       font-size: 16px;
       box-shadow: 0 5px 10px 0 rgba(10,10,10, .3);
 
-      .mat-card-header {
-        margin: 20px 0 40px;
-        .mat-card-header-text {
-          margin: 0 0;
-        }
+      @include phones {
+        width: 400px;
       }
 
-      .form {
-        .row {
-          .form-field {
-            width: 100%;
-            margin-bottom: 20px;
-          }
-        }
-        .mat-card-actions {
-          margin-left: 0;
-          margin-right: 0;
-          display: flex;
-          justify-content: flex-end;
+      @include phonesHR {
+        width: 500px;
+      }
+
+      .mat-card-header {
+        margin: 20px 0 10px;
+        .mat-card-header-text {
+          margin: 0 0;
         }
       }
       .bottom {
@@ -40,6 +35,7 @@
         a {
           color: $color-primary;
           text-decoration: none;
+          cursor: pointer;
         }
       }
     }
