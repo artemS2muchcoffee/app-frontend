@@ -1,0 +1,25 @@
+:host ::ng-deep {
+  .product-header {
+    .mat-toolbar-row {
+      justify-content: space-between;
+
+      .sign-in-link,
+      .logo-link {
+        text-decoration: none;
+        color: #ffffff;
+      }
+
+      .sign-in-link {
+        font-size: 14px;
+      }
+
+      .btn-auth {
+        font-size: 14px;
+        border: none;
+        background-color: transparent;
+        color: #ffffff;
+        cursor: pointer;
+      }
+    }
+  }
+}

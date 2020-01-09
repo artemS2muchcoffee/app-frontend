@@ -1,0 +1,14 @@
+<mat-toolbar color="primary" class="product-header">
+  <mat-toolbar-row>
+    <a routerLink="/product" class="logo-link"> Logo </a>
+    <ng-container *ngIf="(isGuest$ | async); else authUser">
+      <a routerLink="/auth/sign-in" class="sign-in-link"> Log In </a>
+    </ng-container>
+    <ng-template #authUser>
+      <button class="btn-auth" (click)="logOut()"> Log Out </button>
+    </ng-template>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div class="wrapper-content">
+  <router-outlet></router-outlet>
+</div>
