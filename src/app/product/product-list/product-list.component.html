@@ -1,0 +1,12 @@
+<div class="product-list">
+  <mat-card class="product-item" *ngFor="let product of products$ | async" (click)="openProduct(product.id)">
+    <div class="image">
+      <img
+        *ngIf="product?.img"
+        [src]="url + '/static/' + product?.img" [alt]="product?.title">
+    </div>
+    <mat-card-content>
+      <div class="title">{{ product.title }}</div>
+    </mat-card-content>
+  </mat-card>
+</div>

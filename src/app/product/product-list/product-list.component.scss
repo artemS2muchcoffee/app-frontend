@@ -1,0 +1,63 @@
+@import "../../../styles/media";
+
+:host ::ng-deep {
+  .product-list {
+    padding-left: 20px;
+
+    @include laptops {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .product-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      height: 230px;
+      margin-bottom: 20px;
+      margin-right: 20px;
+      box-shadow: 0 5px 10px 0 rgba(10,10,10, .3);
+
+      @include phones {
+        flex-direction: row;
+      }
+
+      @include laptops {
+        width: 230px;
+        height: 260px;
+        flex-direction: column;
+      }
+
+      .image {
+        width: 180px;
+        height: 180px;
+        background-image: url(/assets/img/no-image.png);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        @include laptops {
+          width: 230px;
+          height: 230px;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    .mat-card-content {
+      @include phones {
+        margin-left: 25px;
+      }
+
+      .title {
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+}
