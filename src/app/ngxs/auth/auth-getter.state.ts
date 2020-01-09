@@ -7,4 +7,9 @@ export class AuthGetterState {
   static isGuest(state: AuthStateModel) {
     return !state.token;
   }
+
+  @Selector([AuthState])
+  static getToken( { token }: AuthStateModel) {
+    return token;
+  }
 }
