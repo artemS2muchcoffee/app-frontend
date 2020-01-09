@@ -19,4 +19,17 @@ export class SessionService {
   removeSessionToken() {
     return localStorage.removeItem('app_token');
   }
+
+  setExpirationDate() {
+    const expirationDate = new Date(new Date().getTime() + (3600 * 1000) * 3);
+    return localStorage.setItem('expiration_Date', expirationDate.toISOString());
+  }
+
+  getExpirationDate() {
+    return localStorage.getItem('expiration_Date');
+  }
+
+  removeExpirationDate() {
+    return localStorage.removeItem('expiration_Date');
+  }
 }
