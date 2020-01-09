@@ -1,0 +1,71 @@
+<div class="product">
+  <div class="title">{{(product$ | async)?.title}}</div>
+  <bar-rating [rate]="commonProductRate$ | async" readOnly="true" [max]="5" theme="fontawesome-o"></bar-rating>
+  <mat-tab-group>
+    <mat-tab label="Product Description">
+      <div class="image">
+        <img
+          *ngIf="(product$ | async)?.img"
+          [src]="url + '/static/' + (product$ | async)?.img" [alt]="(product$ | async)?.title">
+      </div>
+      <div class="description">{{ (product$ | async)?.text }}</div>
+    </mat-tab>
+    <mat-tab label="Comments">
+      <div class="add-review">
+        <ng-container *ngIf="isGuest$ | async; else member">
+          <button
+            mat-flat-button
+            type="button"
+            color="primary"
+            class="btn"
+            (click)="openAuthorizationDialog()">
+            ADD COMMENT
+          </button>
+        </ng-container>
+        <ng-template #member>
+          <form [formGroup]="form" class="form" (submit)="onSubmit()">
+            <bar-rating [formControl]="rateControl" [max]="5"></bar-rating>
+            <div class="row">
+              <mat-form-field class="form-field">
+                <textarea
+                  matInput
+                  [formControl]="textControl"
+                  type="text"
+                  class="text"
+                  placeholder="Comment"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="action-btn">
+              <button
+                mat-flat-button
+                type="button"
+                class="btn-cancel"
+                (click)="cancelSubmit()">
+                CANCEL
+              </button>
+              <button
+                mat-flat-button
+                type="submit"
+                color="primary"
+                [disabled]="isEmpty$ | async"
+                class="btn">
+                POST COMMENT
+              </button>
+            </div>
+          </form>
+        </ng-template>
+      </div>
+      <mat-card class="review" *ngFor="let review of reviews$ | async">
+        <div class="header">
+          <div class="username">{{ review?.created_by?.username }}</div>
+          <div class="created-at">{{ convertCreatedAtValue(review?.created_at) }}</div>
+        </div>
+        <mat-card-content>
+          <bar-rating [rate]="review?.rate" readOnly="true" [max]="5" theme="fontawesome-o"></bar-rating>
+          <div class="comment">Comment:</div>
+          <div class="text">{{ review?.text }}</div>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>
+</div>
