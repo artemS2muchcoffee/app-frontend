@@ -19,6 +19,7 @@ import {
 import { ApiService } from '../../../../core/general/api.service';
 import { AuthResponse } from '../../../../shared/models/auth-response.model';
 import { SignUpFail, SignUpSuccess } from '../../../auth/auth.actions';
+import { ShowSnackAction } from '../../../application/application.actions';
 
 @State<IRequestsNestedState>({
   name: 'signUpRequestState',
@@ -35,7 +36,14 @@ export class SignUpRequestState {
   signInRequest({ patchState, dispatch }: StateContext<IRequestsNestedState>, { payload }: SignUpRequest) {
     patchState(requestLoadingState);
     const url = 'register/';
-    return this.apiService.postApi<AuthResponse>(url, payload).pipe(
+    const input = {
+      ...payload,
+      username: payload.username,
+      first_name: '',
+      last_name: '',
+      email: `${payload.username}@user.com`,
+    };
+    return this.apiService.postApi<AuthResponse>(url, input).pipe(
       switchMap(res => {
         return dispatch(new SignUpRequestSuccess(res));
       }),
@@ -48,7 +56,7 @@ export class SignUpRequestState {
   @Action(SignUpRequestSuccess)
   signInRequestSuccess({ patchState, dispatch }: StateContext<IRequestsNestedState>, { payload }: SignUpRequestSuccess) {
     patchState(requestSuccessState(payload));
-    dispatch(new SignUpSuccess(payload.token));
+    dispatch(payload.success ? new SignUpSuccess(payload.token) : new ShowSnackAction(payload.message));
   }
 
   @Action(SignUpRequestFail)
