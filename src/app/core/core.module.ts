@@ -3,6 +3,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { MatSnackBarModule } from '@angular/material';
+
 import { NgxsStoreModule } from '../ngxs/ngxs.module';
 
 @NgModule({
@@ -11,6 +13,7 @@ import { NgxsStoreModule } from '../ngxs/ngxs.module';
     BrowserModule,
     BrowserAnimationsModule,
     NgxsStoreModule,
+    MatSnackBarModule,
   ],
 })
 export class CoreModule {
