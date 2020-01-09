@@ -1,80 +1,44 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
+import { CombineSubscriptions } from 'ngx-destroy-subscribers';
+import { combineLatest, Unsubscribable } from 'rxjs';
+import { filter } from 'rxjs/operators';
+
+import { AuthType } from '../../shared/enums/auth-type.enum';
 import { AuthService } from '../../core/services/auth.service';
-import { FormError } from '../../shared/models/form-error.model';
+import { IRequestsNestedStatus } from '../../shared/enums/i-requests-nested-status.enum';
 
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
-export class SignInComponent implements OnInit {
+export class SignInComponent implements OnInit, OnDestroy {
 
-  signInForm: FormGroup;
-  showErrorsIfSubmitted: boolean;
-  public errors: FormError;
+  @CombineSubscriptions()
+  protected subscribers: Unsubscribable;
 
-  get usernameControl(): AbstractControl {
-    return this.signInForm.get('username');
-  }
-
-  get passwordControl(): AbstractControl {
-    return this.signInForm.get('password');
-  }
+  type = AuthType;
 
   constructor(
+    private router: Router,
     private authService: AuthService,
   ) {
   }
 
   ngOnInit() {
-    this.setErrors();
-    this.createSignInForm();
-    this.showErrorsIfSubmitted = false;
+    this.subscribers = combineLatest(
+      this.authService.signInRequestState$,
+      this.authService.isGuest$,
+    ).pipe(
+      filter(([res, isGuest]) => res.status === IRequestsNestedStatus.Success && res.loaded === true && isGuest === false),
+    ).subscribe(
+      () => this.router.navigate(['/', 'product'])
+    );
   }
 
-  createSignInForm() {
-    const validationFormValue = {
-      username: {
-        minlength: 4,
-      },
-      password: {
-        minlength: 6,
-      },
-    };
-
-    this.signInForm = new FormGroup({
-      username: new FormControl( '', [
-          Validators.required,
-          Validators.minLength(validationFormValue.username.minlength),
-        ],
-      ),
-      password: new FormControl( '', [
-          Validators.required,
-          Validators.minLength(validationFormValue.password.minlength),
-        ],
-      ),
-    });
-  }
-
-  onSubmit() {
-    this.showErrorsIfSubmitted = true;
-    if (this.signInForm.valid) {
-      this.authService.signIn(this.signInForm.value);
-    }
-  }
-
-  setErrors() {
-    this.errors = {
-      username: [
-        {name: 'required', text: 'Username is required'},
-        {name: 'minlength', text: `Min length is 4 symbols`},
-      ],
-      password: [
-        {name: 'required', text: 'Password is required'},
-        {name: 'minlength', text: `Min length is 6 symbols`},
-      ],
-    };
+  ngOnDestroy() {
+    console.log('ngOnDestroy');
   }
 }

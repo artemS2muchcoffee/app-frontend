@@ -2,39 +2,7 @@
   <mat-card-header>
     <mat-card-title>Log In</mat-card-title>
   </mat-card-header>
-  <form [formGroup]="signInForm" class="form" (submit)="onSubmit()">
-    <mat-card-content>
-      <div class="row">
-        <mat-form-field class="form-field">
-          <app-form-validation-error
-            [errors]="errors.username"
-            [markAsDirty]="showErrorsIfSubmitted"
-            [control]="usernameControl">
-            <input matInput [formControl]="usernameControl" type="email" class="email" placeholder="Username"/>
-          </app-form-validation-error>
-        </mat-form-field>
-      </div>
-      <div class="row">
-        <mat-form-field class="form-field">
-          <app-form-validation-error
-            [errors]="errors.password"
-            [markAsDirty]="showErrorsIfSubmitted"
-            [control]="passwordControl">
-            <input matInput [formControl]="passwordControl" type="password" placeholder="Password"/>
-          </app-form-validation-error>
-        </mat-form-field>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
-      <button
-        mat-flat-button
-        type="submit"
-        color="primary"
-        class="btn">
-        Log In
-      </button>
-    </mat-card-actions>
-  </form>
+  <app-auth-form [authType]="type.SingIn"></app-auth-form>
   <div class="bottom">
     IS NOT REGISTERED?
     <a routerLink="/auth/sign-up">SIGN UP</a>
