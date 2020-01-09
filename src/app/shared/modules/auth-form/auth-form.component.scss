@@ -1,0 +1,15 @@
+:host ::ng-deep {
+  .form {
+    .row {
+      .form-field {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+    }
+    .action-btn {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+  }
+}

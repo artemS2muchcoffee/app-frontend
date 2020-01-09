@@ -1,0 +1,41 @@
+<form [formGroup]="form" class="form" (submit)="onSubmit()">
+  <div class="row">
+    <mat-form-field class="form-field">
+      <app-form-validation-error
+        [errors]="errors.username"
+        [markAsDirty]="showErrorsIfSubmitted"
+        [control]="usernameControl">
+        <input matInput [formControl]="usernameControl" type="email" class="email" placeholder="Username"/>
+      </app-form-validation-error>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="form-field">
+      <app-form-validation-error
+        [errors]="errors.password"
+        [markAsDirty]="showErrorsIfSubmitted"
+        [control]="passwordControl">
+        <input matInput [formControl]="passwordControl" type="password" placeholder="Password"/>
+      </app-form-validation-error>
+    </mat-form-field>
+  </div>
+  <div class="row" *ngIf="authType === type.SignUp">
+    <mat-form-field class="form-field">
+      <app-form-validation-error
+        [errors]="errors.confirmPassword"
+        [markAsDirty]="showErrorsIfSubmitted"
+        [control]="form.get('confirmPassword')">
+        <input matInput [formControl]="form.get('confirmPassword')" type="password" placeholder="Confirm Password"/>
+      </app-form-validation-error>
+    </mat-form-field>
+  </div>
+  <div class="action-btn">
+    <button
+      mat-flat-button
+      type="submit"
+      color="primary"
+      class="btn">
+      {{ authType === type.SignUp ? 'Sign Up' : 'Sign In' }}
+    </button>
+  </div>
+</form>
